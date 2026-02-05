@@ -5,13 +5,13 @@ import com.efrei.efreiemployees.dto.DepartmentMapper;
 import com.efrei.efreiemployees.entity.Department;
 import com.efrei.efreiemployees.repository.DepartmentRepository;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public class DepartmentService {
+@Service
+public class DepartmentService implements IDepartmentService {
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper departmentMapper;
 
@@ -21,8 +21,8 @@ public class DepartmentService {
         this.departmentMapper = departmentMapper;
     }
 
-    @NotNull
-    public List<DepartmentDTO> getAllDepartmentsDTO() {
+    @Override
+    public @NotNull List<DepartmentDTO> getAllDepartmentsDTO() {
         return this.getAllDepartments().stream()
                 .map(this.departmentMapper::map)
                 .toList();
@@ -33,8 +33,8 @@ public class DepartmentService {
         return this.departmentRepository.findAll();
     }
 
-    @NotNull
-    public DepartmentDTO getDepartmentDTOById(final String deptNo) {
+    @Override
+    public @NotNull DepartmentDTO getDepartmentDTOById(final String deptNo) {
         return this.getDepartmentById(deptNo)
                 .map(this.departmentMapper::map)
                 .orElseThrow(() -> new IllegalArgumentException("Department not found with id: " + deptNo));
